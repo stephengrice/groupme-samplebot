@@ -3,11 +3,10 @@ require 'open-uri'
 require 'net/http'
 require 'json'
 
+DEBUG_MODE    = ENV['DEBUG_MODE']
 BOT_NAME      = "Sample Bot"
 BOT_ID        = ENV['BOT_ID']
 RESPONSE_URL  = "https://api.groupme.com/v3/bots/post"
-
-puts "Hello world"
 
 # This is where regular people can go to learn about your bot
 get '/' do
@@ -18,11 +17,22 @@ end
 post '/' do
     # Parse information from GroupMe
     groupme = JSON.parse(request.body.read)
+    # Available attributes:
+    # => attachments
+    # => avatar_url
+    # => created_at
+    # => group_id
+    # => id
+    # => name
+    # => sender_id
+    # => sender_type
+    # => source_guid
+    # => system
+    # => text
+    # => user_id
 
-    puts groupme.to_s
-
-    if (groupme['text'].downcase == "who are you?") then
-      #send_response("Hi, my name is " + BOT_NAME + ". Nice to meet you.")
+    if groupme['text'].downcase == "who are you?" then
+      send_response("Hi, my name is " + BOT_NAME + ". Nice to meet you.")
     end
 
     'Bot execution complete.'
